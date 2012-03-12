@@ -1,0 +1,32 @@
+--- a/dwm.c	2012-02-12 10:56:30.295137252 +0200
++++ b/dwm.c	2012-02-12 10:56:30.298137253 +0200
+@@ -281,6 +281,7 @@ static void togglemax(const Arg *arg);
+ static void settagsatom(Window w, unsigned int tags);
+ static void focusurgent(const Arg *arg);
+ static void savefloat(Client *c);
++static void warp(Monitor *m);
+ 
+ /* variables */
+ static const char broken[] = "broken";
+@@ -978,6 +979,7 @@ focusmon(const Arg *arg) {
+ 		return;
+ 	unfocus(selmon->sel, True);
+ 	selmon = m;
++	warp(selmon);
+ 	focus(NULL);
+ }
+ 
+@@ -2638,6 +2640,13 @@ savefloat(Client *c) {
+ 	c->sfh = c->h;
+ }
+ 
++void
++warp(Monitor *m) {
++	if(!m)
++		return;
++	XWarpPointer(dpy, None, root, 0, 0, 0, 0, m->wx + m->ww / 2, m->wy + m->wh / 2);
++}
++
+ int
+ main(int argc, char *argv[]) {
+ 	if(argc == 2 && !strcmp("-v", argv[1]))

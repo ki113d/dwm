@@ -1,22 +1,19 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-
-static const char font[] = "-artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1";
-static const char colors[MAXCOLORS][ColLast][10] = {
+static const char font[]            = "-misc-fixed-medium-r-semicondensed--12-110-75-75-c-*-iso8859-2";
+static const char colors[MAXCOLORS][ColLast][8] = {
 	/* border     fg         bg       */
-	{ "#8B0000", "#696969", "#020202" }, /* 1 = normal */
-    { "#8B0000", "#CC0000", "#020202" }, /* 2 = selected */
-	{ "#8B0000", "#66CD00", "#020202" }, /* 3 = green */
-	{ "#8B0000", "#BF85CC", "#020202" }, /* 4 = yellow */
-	{ "#8B0000", "#DDDDDD", "#020202" }, /* 5 = white */
-	{ "#8B0000", "#7E62B3", "#020202" }, /* 6 = magenta */
-	{ "#8B0000", "#899CA1", "#020202" }, /* 7 = grey */
-    { "#8B0000", "#6633FF", "#020202" }, /* 8 = blue */
-    { "#8B0000", "#CC0000", "#020202" }, /* 9 = red  */
+	{ "#222222", "#666666", "#1A1A1A" }, /* 0 = normal */
+	{ "#876CBE", "#DDDDDD", "#1A1A1A" }, /* 1 = selected */
+	{ "#FF2882", "#FFFFFF", "#FF2882" }, /* 2 = urgent */
+	{ "#222222", "#53A6A6", "#1A1A1A" }, /* 3 = green */
+	{ "#222222", "#BF85CC", "#1A1A1A" }, /* 4 = yellow */
+	{ "#222222", "#6096BF", "#1A1A1A" }, /* 5 = cyan */
+	{ "#222222", "#7E62B3", "#1A1A1A" }, /* 6 = magenta */
+	{ "#222222", "#899CA1", "#1A1A1A" }, /* 7 = grey */
 };
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int gappx     = 8;        /* gap pixel between windows */
 static const unsigned int snap      = 8;        /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
@@ -25,15 +22,26 @@ static const Bool viewontag         = True;     /* Switch view on tag switch */
 static const unsigned int statusmon = 0;        /* On which monitor should the status appear */
 
 static const Rule rules[] = {
-	/* class          instance     title             tags mask   floating     centred   monitor*/
-	{ "Gimp",         NULL,        NULL,             0,          True,        False,      -1 },
-	{ "MPlayer",      NULL,        NULL,             0,          True,        True,       -1 },
-	{ "Vlc",          NULL,        NULL,             0,          True,        True,       -1 },
-	{ "Chromium",     NULL,        NULL,             1 << 4,     False,       False,       0 },
-	{ "Firefox",      NULL,        NULL,             1 << 4,     True,        True,        0 },
-	{ "Firefox",      "Navigator", NULL,             1 << 4,     False,       False,       0 },
-    { "URxvt",        NULL,        "ncmpcpp",        1 << 5,     False,       False,      -1 },
-    { "URxvt",        NULL,        "Weechat", 1 << 3,     False,       False,      -1 },
+	/* class          instance     title       tags mask     isfloating   iscentred   monitor */
+	{ "Gimp",         NULL,        NULL,       0,            True,        False,      -1 },
+	{ "MPlayer",      NULL,        NULL,       0,            True,        True,       -1 },
+	{ "mplayer2",     NULL,        NULL,       0,            True,        True,       -1 },
+	{ "Vlc",          NULL,        NULL,       0,            True,        True,       -1 },
+	{ "XFontSel",     NULL,        NULL,       0,            True,        True,       -1 },
+	{ "Kcalc",        NULL,        NULL,       0,            True,        True,       -1 },
+	{ "Chromium",     NULL,        NULL,       1 << 2,       False,       False,       0 },
+	{ "Firefox",      NULL,        NULL,       1 << 2,       True,        True,        0 },
+	{ "Firefox",      "Navigator", NULL,       1 << 2,       False,       False,       0 },
+	{ "Ktorrent",     NULL,        NULL,       1 << 4,       False,       False,       0 },
+	{ "VirtualBox",   NULL,        NULL,       1 << 5,       False,       False,       0 },
+	{ "VBoxSDL",      NULL,        NULL,       1 << 5,       False,       False,       0 },
+	{ "Xephyr",       NULL,        NULL,       0,            False,       False,       1 },
+	{ "Komodo Edit",  NULL,        NULL,       1 << 2,       True,        True,        1 },
+	{ "Komodo Edit",  "Komodo",    NULL,       1 << 2,       False,       False,       1 },
+	{ "Komodo Edit",  NULL,        "Find",     1 << 2,       True,        True,        1 },
+	{ "Pidgin",       NULL,        NULL,       1 << 3,       False,       False,       1 },
+	{ "Pidgin",       NULL,        "Pidgin",   1 << 3,       True,        True,        1 },
+	{ "Gyachi",       NULL,        NULL,       1 << 3,       False,       False,       1 },
 };
 
 /* layout(s) */
@@ -55,19 +63,19 @@ static const Layout layouts[] = {
 static const Tag tags[2][6] = {
 	/* name       layout           mfact    nmaster */
 	{
-	{ "Main",     &layouts[4],     -1,      -1 },
-	{ "Term",     &layouts[4],     -1,      -1 },
-	{ "Dev",      &layouts[0],     0.80,    -1 },
-	{ "Chat",     &layouts[4],     -1,      -1 },
-	{ "Web",      &layouts[1],     -1,      -1 },
-	{ "Music",    &layouts[4],     -1,      -1 },
+	{ "main",     &layouts[4],     -1,      -1 },
+	{ "term",     &layouts[4],     -1,      -1 },
+	{ "web",      &layouts[1],     -1,      -1 },
+	{ "irc",      &layouts[4],     -1,      -1 },
+	{ "dld",      &layouts[4],     -1,      -1 },
+	{ "misc",     &layouts[4],     -1,      -1 },
 	},{
-	{ "Main",     &layouts[4],     -1,      -1 },
-	{ "Term",     &layouts[4],     -1,      -1 },
-	{ "Chat",     &layouts[1],     -1,      -1 },
-	{ "Web",      &layouts[1],     0.80,    -1 },
-    { "Music",    &layouts[4],     -1,      -1 },
-	{ "Misc",     &layouts[4],     -1,      -1 },
+	{ "main",     &layouts[4],     -1,      -1 },
+	{ "term",     &layouts[4],     -1,      -1 },
+	{ "dev",      &layouts[1],     -1,      -1 },
+	{ "im",       &layouts[5],     0.80,    -1 },
+	{ "doc",      &layouts[4],     -1,      -1 },
+	{ "misc",     &layouts[4],     -1,      -1 },
 	}
 };
 
@@ -81,52 +89,59 @@ static const Tag tags[2][6] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* commands */
-static const char terminal[]       = "urxvt";
+static const char terminal[]       = "urxvtcd";
 static const char scratchpadname[] = "scratchy";
 static const char *dmenucmd[]      = { "dmenu_run", "-i", "-p", "Run command:", "-fn", font, "-nb", colors[0][ColBG], "-nf", colors[0][ColFG],"-sb", colors[1][ColBG], "-sf", colors[1][ColFG], NULL };
 static const char *termcmd[]       = { terminal, NULL };
-static const char *transterm[]     = { terminal, "-tr", "-sh", "35", NULL };
+static const char *tmuxcmd[]       = { terminal, "-e", "tmuxa", NULL };
 static const char *musiccmd[]      = { terminal, "-e", "ncmpcpp", NULL };
 static const char *scratchpadcmd[] = { terminal, "-name", scratchpadname, "-geometry", "150x40", NULL };
-static const char *filemancmd[]    = { "thunar", NULL };
-static const char *browsercmd[]    = { "chromium", NULL };
-/* static const char *altbrowsercmd[] = { "firefox", NULL }; */
-static const char *editorcmd[]     = { terminal, "-e", "vim", NULL };
+static const char *filemancmd[]    = { "dolphin", NULL };
+static const char *browsercmd[]    = { "firefox", NULL };
+static const char *altbrowsercmd[] = { "chromium", NULL };
+static const char *editorcmd[]     = { "komodo", NULL };
+static const char *imcmd[]         = { "pidgin", NULL };
+static const char *vboxcmd[]       = { "VirtualBox", NULL };
 static const char *volmcmd[]       = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 static const char *voldcmd[]       = { "amixer", "-q", "sset", "Master", "1-", "unmute", NULL };
 static const char *volucmd[]       = { "amixer", "-q", "sset", "Master", "1+", "unmute", NULL };
-static const char *ncmpcppvoldcmd[]   = { "ncmpcpp", "volume", "-2", NULL };
-static const char *ncmpcppvolucmd[]   = { "ncmpcpp", "volume", "+2", NULL };
-static const char *ncmpcpptogglecmd[] = { "ncmpcpp", "toggle", NULL };
-static const char *ncmpcppstopcmd[]   = { "ncmpcpp", "stop", NULL };
-static const char *ncmpcppprevcmd[]   = { "ncmpcpp", "prev", NULL };
-static const char *ncmpcppnextcmd[]   = { "ncmpcpp", "next", NULL };
+static const char *mpdvoldcmd[]    = { "ncmpcpp", "volume", "-2", NULL };
+static const char *mpdvolucmd[]    = { "ncmpcpp", "volume", "+2", NULL };
+static const char *mpdtogglecmd[]  = { "ncmpcpp", "toggle", NULL };
+static const char *mpdstopcmd[]    = { "ncmpcpp", "stop", NULL };
+static const char *mpdprevcmd[]    = { "ncmpcpp", "prev", NULL };
+static const char *mpdnextcmd[]    = { "ncmpcpp", "next", NULL };
 static const char *screenshotcmd[] = { "printscreen", NULL };
 static const char *lockcmd[]       = { "slock", NULL };
-static const char *irccmd[]        = { terminal, "-e", "/home/ki113d/bin/Weechat", NULL };
+static const char *suspendcmd[]    = { "dbus-send", "--system", "--print-reply", "--dest=org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower.Suspend", NULL };
+static const char *hibernatecmd[]  = { "dbus-send", "--system", "--print-reply", "--dest=org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower.Hibernate", NULL };
+static const char *rebootcmd[]     = { "dbus-send", "--system", "--print-reply", "--dest=org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager.Restart", NULL };
+static const char *shutdowncmd[]   = { "dbus-send", "--system", "--print-reply", "--dest=org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager.Stop", NULL };
 
 static Key keys[] = {
 	/* modifier                     key         function        argument */
-	{ ALTKEY,                       XK_p,       spawn,          {.v = dmenucmd } },
+	{ ALTKEY,                       XK_F2,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,  spawn,          {.v = termcmd } },
-    { MODKEY|ControlMask,           XK_Return,  spawn,          {.v = transterm } },
-	{ MODKEY|ShiftMask,             XK_n,       spawn,          {.v = musiccmd } },
-    { MODKEY|ShiftMask,             XK_m,       spawn,          {.v = irccmd } },
+	{ MODKEY,                       XK_Return,  spawn,          {.v = tmuxcmd } },
+	{ MODKEY,                       XK_n,       spawn,          {.v = musiccmd } },
 	{ MODKEY,                       XK_x,       togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_t,       spawn,          {.v = filemancmd } },
 	{ MODKEY,                       XK_f,       spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_c,       spawn,          {.v = altbrowsercmd } },
 	{ MODKEY,                       XK_e,       spawn,          {.v = editorcmd } },
+	{ MODKEY,                       XK_p,       spawn,          {.v = imcmd } },
+	{ MODKEY,                       XK_v,       spawn,          {.v = vboxcmd } },
 	{ 0,                            0x1008ff12, spawn,          {.v = volmcmd } },
 	{ 0,                            0x1008ff11, spawn,          {.v = voldcmd } },
 	{ 0,                            0x1008ff13, spawn,          {.v = volucmd } },
-	{ MODKEY,                       0x1008ff11, spawn,          {.v = ncmpcppvoldcmd } },
-	{ MODKEY,                       0x1008ff13, spawn,          {.v = ncmpcppvolucmd } },
-	{ 0,                            0x1008ff14, spawn,          {.v = ncmpcpptogglecmd } },
-    { 0,                            0x1008ff15, spawn,          {.v = ncmpcppstopcmd } },
-	{ 0,                            0x1008ff16, spawn,          {.v = ncmpcppprevcmd } },
-	{ 0,                            0x1008ff17, spawn,          {.v = ncmpcppnextcmd } },
+	{ MODKEY,                       0x1008ff11, spawn,          {.v = mpdvoldcmd } },
+	{ MODKEY,                       0x1008ff13, spawn,          {.v = mpdvolucmd } },
+	{ 0,                            0x1008ff14, spawn,          {.v = mpdtogglecmd } },
+	{ 0,                            0x1008ff15, spawn,          {.v = mpdstopcmd } },
+	{ 0,                            0x1008ff16, spawn,          {.v = mpdprevcmd } },
+	{ 0,                            0x1008ff17, spawn,          {.v = mpdnextcmd } },
 	{ 0,                            XK_Print,   spawn,          {.v = screenshotcmd } },
-	{ MODKEY|ALTKEY,                XK_m,       togglemax,      {0} },
+	{ MODKEY|ShiftMask,             XK_m,       togglemax,      {0} },
 	{ MODKEY|ShiftMask,             XK_b,       togglebar,      {0} },
 	{ MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,       focusstack,     {.i = -1 } },
@@ -165,6 +180,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_5,                       4)
 	TAGKEYS(                        XK_6,                       5)
 	{ 0,                            XK_Pause,   spawn,          {.v = lockcmd } },
+	{ ALTKEY|ControlMask,           XK_s,       spawn,          {.v = suspendcmd } },
+	{ ALTKEY|ControlMask,           XK_h,       spawn,          {.v = hibernatecmd } },
+	{ ALTKEY|ControlMask,           XK_r,       spawn,          {.v = rebootcmd } },
+	{ ALTKEY|ControlMask,           XK_q,       spawn,          {.v = shutdowncmd } },
 	{ MODKEY|ShiftMask,             XK_Escape,  quit,           {0} },
 };
 
@@ -185,4 +204,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button4,        cycle,          {.i = -1} },
 	{ ClkTagBar,            0,              Button5,        cycle,          {.i = +1} },
 };
-

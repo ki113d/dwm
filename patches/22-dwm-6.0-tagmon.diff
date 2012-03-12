@@ -1,0 +1,89 @@
+--- a/dwm.c	2012-02-12 10:56:30.305137253 +0200
++++ b/dwm.c	2012-02-12 10:56:30.308137253 +0200
+@@ -229,7 +229,7 @@ static void restack(Monitor *m);
+ static void run(void);
+ static void scan(void);
+ static Bool sendevent(Client *c, Atom proto);
+-static void sendmon(Client *c, Monitor *m);
++static void sendmon(Client *c, Monitor *m, Bool readrules);
+ static void setclientstate(Client *c, long state);
+ static void setfocus(Client *c);
+ static void setfullscreen(Client *c, Bool fullscreen);
+@@ -1389,7 +1389,7 @@ movemouse(const Arg *arg) {
+ 	} while(ev.type != ButtonRelease);
+ 	XUngrabPointer(dpy, CurrentTime);
+ 	if((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
+-		sendmon(c, m);
++		sendmon(c, m, False);
+ 		selmon = m;
+ 		focus(NULL);
+ 	}
+@@ -1531,7 +1531,7 @@ resizemouse(const Arg *arg) {
+ 	XUngrabPointer(dpy, CurrentTime);
+ 	while(XCheckMaskEvent(dpy, EnterWindowMask, &ev));
+ 	if((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
+-		sendmon(c, m);
++		sendmon(c, m, False);
+ 		selmon = m;
+ 		focus(NULL);
+ 	}
+@@ -1598,14 +1598,39 @@ scan(void) {
+ }
+ 
+ void
+-sendmon(Client *c, Monitor *m) {
++sendmon(Client *c, Monitor *m, Bool readrules) {
++	const char *class, *instance;
++	unsigned int i;
++	const Rule *r;
++	XClassHint ch = { 0 };
++
+ 	if(c->mon == m)
+ 		return;
+ 	unfocus(c, True);
+ 	detach(c);
+ 	detachstack(c);
+ 	c->mon = m;
+-	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
++	if (!readrules) {
++		c->tags = m->tagset[m->seltags];
++	} else {
++		c->tags = 0;
++		if(XGetClassHint(dpy, c->win, &ch)) {
++			class    = ch.res_class ? ch.res_class : broken;
++			instance = ch.res_name  ? ch.res_name  : broken;
++			for(i = 0; i < LENGTH(rules); i++) {
++				r = &rules[i];
++				if((!r->title || strstr(c->name, r->title))
++				&& (!r->class || strstr(class, r->class))
++				&& (!r->instance || strstr(instance, r->instance)))
++					c->tags |= r->tags;
++			}
++			if(ch.res_class)
++				XFree(ch.res_class);
++			if(ch.res_name)
++				XFree(ch.res_name);
++		}
++		c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : m->tagset[m->seltags];  
++	}
+ 	attach(c);
+ 	attachstack(c);
+ 	focus(NULL);
+@@ -1833,9 +1858,16 @@ tag(const Arg *arg) {
+ 
+ void
+ tagmon(const Arg *arg) {
++	Monitor *m;
+ 	if(!selmon->sel || !mons->next)
+ 		return;
+-	sendmon(selmon->sel, dirtomon(arg->i));
++	m = dirtomon(arg->i);
++	if(selmon->sel->isfloating) {
++		selmon->sel->x += m->mx - selmon->mx;
++		selmon->sel->y += m->my - selmon->my;
++	}
++	sendmon(selmon->sel, m, True);
++	focusmon(arg);
+ }
+ 
+ int

@@ -1,0 +1,85 @@
+dwm_patch=${dwm_patch:-1}
+
+pkgname=dwm
+pkgver=6.0
+pkgrel=1
+pkgdesc='A dynamic window manager for X'
+url='http://dwm.suckless.org'
+arch=('i686' 'x86_64')
+license=('MIT')
+options=('zipman')
+depends=('libx11' 'libxinerama' 'dmenu')
+source=("${pkgname}-${pkgver}.tar.gz::http://hg.suckless.org/${pkgname}/archive/tip.tar.gz"
+        "config.h"
+        "01-${pkgname}-${pkgver}-pertag2.diff"
+        "02-${pkgname}-${pkgver}-push.diff"
+        "03-${pkgname}-${pkgver}-cycle.diff"
+        "04-${pkgname}-${pkgver}-gaplessgrid.diff"
+        "05-${pkgname}-${pkgver}-pidgin.diff"
+        "06-${pkgname}-${pkgver}-monocle_count.diff"
+        "07-${pkgname}-${pkgver}-monocle_borderless.diff"
+        "08-${pkgname}-${pkgver}-clicktofocus.diff"
+        "09-${pkgname}-${pkgver}-viewontag.diff"
+        "10-${pkgname}-${pkgver}-scratchpad.diff"
+        "11-${pkgname}-${pkgver}-togglemax.diff"
+        "12-${pkgname}-${pkgver}-autoresize.diff"
+        "13-${pkgname}-${pkgver}-increase_mfact_limit.diff"
+        "14-${pkgname}-${pkgver}-remember-tags.diff"
+        "15-${pkgname}-${pkgver}-centred-floating.diff"
+        "16-${pkgname}-${pkgver}-focusurgent.diff"
+        "17-${pkgname}-${pkgver}-statuscolors.diff"
+        "18-${pkgname}-${pkgver}-save_floats.diff"
+        "19-${pkgname}-${pkgver}-netactivewindow.diff"
+        "20-${pkgname}-${pkgver}-statusmon.diff"
+        "21-${pkgname}-${pkgver}-warp.diff"
+        "22-${pkgname}-${pkgver}-tagmon.diff"
+        "23-${pkgname}-${pkgver}-multitags.diff")
+sha256sums=('7c966a3b4e4c27d00ace0350efd22ec4565db274719627e99a86a96ada9816bd'
+            'a5c43ed2444ca55eaa730a0a7adcecd748ff4bbd4ca34f3521a8d07306030d22'
+            '899bc6ae1fed637a17cfaaab88a8c3c53f2f4c80574c9c461833d5f93547afb2'
+            '6c3e4da8c31bbfc0e26ce45a84573d4f6db1a8996439809ac5186f8d6e73ad48'
+            '65538677ff0bd2e56c3266498abe7e9d4e508a783727efab4caaa9284a0405bd'
+            '0e5f8aaa3fdcba9308e5db25347f5d6e8659385ad9ba518edce91414d575fe00'
+            '41546c9fbc6795a7c5dab689a9ae67ff7b8055cefb29dbfc2f8b6a71fd822404'
+            'aa23fc67ed0627a608017cdacf7aa45a1b2e3d8d1800e6a086ddf2fe4670e86f'
+            'a127d5ede9daa08daa11b7e1419d6140c266de682a9fa8849614b8591728a31b'
+            '3a156e67674478fb0cebfb49e7449eef3d7b403a06267bcadd4a0744384a1cf8'
+            'e38374c4c77e4dfbf6d4096492801a4905188ab60125a2d879e20f80054015c7'
+            '1b825ff2c294359e03ba102cace29a32f915a29640224e4f48a0d62e0813d927'
+            '2a890e321c220b8c2491d005f4d7c1f269865d68ec43e03027974f9e7fc99f47'
+            'bae7369450ef8e33d2a53a4f4591b0bd7c6dcb3be58ee91b1a9dec0931c1aa8e'
+            '5e66a7760b7940a5a2ba110a2c7a39c50108e97d994c7c70773c02eab1732ac7'
+            'a2de6d2284d9981f8b224bec04b48003db7c2045c86dcc880f0d99656948b687'
+            'b105fafb3c3155bf86edb295cb09b1cb683144dbc5dc44122a5135aaf9c34b4b'
+            '336c95a5c533ee632a5eab8294d2fcaabe3509b2a8d700216402e5d9187be6b2'
+            '7431df5cfd78ede9542ca6449487924b01976c34075ee565fd9fd90607a1ed9d'
+            '86deb23dff4b3c0e61ae34ecf58b81713236e0d7c4f51c8e54265fb14da0affd'
+            'b451ef57a3750c8db6d03ce43cac0616caa0c8a1eb755f9e65d6344cbc9098f7'
+            '94883f3c2e7bda8dcba33aed198f698720ec24ef8ee5ad0bbf7fc2d04420bfae'
+            'f54bc1b0a55849c0e9d709503b90002cfcee83d4771eb4b6b3051bb77e8779a6'
+            '5bc55b44fb3cc718e060637b8740a1e054d9de9390fa0e10c7462edfe612dce5'
+            '805f0c1e1c6d6ccf1b2cdb90b5dee2faaaf317dd2565eddf75ef945bb0babc30')
+
+build() {
+  cd "${srcdir}" && cd "`find . -type d -name dwm-\*`"
+  if [ "${dwm_patch}" == 1 ]; then
+    cp "${srcdir}/config.h" config.h
+    for PATCH in "${source[@]:2}"; do
+      msg "${PATCH##*/}" && patch -Np1 -i "${srcdir}/${PATCH##*/}"
+    done
+  fi
+  sed -i \
+    -e 's/^CPPFLAGS =/CPPFLAGS +=/g' \
+    -e 's/^CFLAGS   =/CFLAGS   +=/g' \
+    -e 's/^LDFLAGS  =/LDFLAGS  +=/g' \
+    -e 's/-O[s0-3]/-O2/g' \
+    config.mk
+  make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
+}
+
+package() {
+  cd "${srcdir}" && cd "`find . -type d -name dwm-\*`"
+  make PREFIX=/usr DESTDIR="${pkgdir}" install
+  install -m644 -D LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -m644 -D README "${pkgdir}/usr/share/doc/${pkgname}/README"
+}
