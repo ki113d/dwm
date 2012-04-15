@@ -6,14 +6,14 @@ static const char font[] = "-artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8
 static const char colors[MAXCOLORS][ColLast][10] = {
 	/* border     fg         bg       */
 	{ "#8B0000", "#696969", "#020202" }, /* 1 = normal */
-    { "#8B0000", "#CC0000", "#020202" }, /* 2 = selected */
+	{ "#8B0000", "#CC0000", "#020202" }, /* 2 = selected */
 	{ "#8B0000", "#66CD00", "#020202" }, /* 3 = green */
 	{ "#8B0000", "#BF85CC", "#020202" }, /* 4 = yellow */
 	{ "#8B0000", "#DDDDDD", "#020202" }, /* 5 = white */
 	{ "#8B0000", "#7E62B3", "#020202" }, /* 6 = magenta */
 	{ "#8B0000", "#899CA1", "#020202" }, /* 7 = grey */
-    { "#8B0000", "#6633FF", "#020202" }, /* 8 = blue */
-    { "#8B0000", "#CC0000", "#020202" }, /* 9 = red  */
+	{ "#8B0000", "#6633FF", "#020202" }, /* 8 = blue */
+	{ "#8B0000", "#CC0000", "#020202" }, /* 9 = red  */
 };
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 8;        /* gap pixel between windows */
@@ -26,14 +26,12 @@ static const unsigned int statusmon = 0;        /* On which monitor should the s
 
 static const Rule rules[] = {
 	/* class          instance     title             tags mask   floating     centred   monitor*/
-	{ "Gimp",         NULL,        NULL,             0,          True,        False,      -1 },
 	{ "MPlayer",      NULL,        NULL,             0,          True,        True,       -1 },
 	{ "Vlc",          NULL,        NULL,             0,          True,        True,       -1 },
 	{ "Chromium",     NULL,        NULL,             1 << 4,     False,       False,       0 },
-	{ "Firefox",      NULL,        NULL,             1 << 4,     True,        True,        0 },
-	{ "Firefox",      "Navigator", NULL,             1 << 4,     False,       False,       0 },
+    { "Dwb",          NULL,        NULL,             1 << 4,     False,       False,       0 },
     { "URxvt",        NULL,        "ncmpcpp",        1 << 5,     False,       False,      -1 },
-    { "URxvt",        NULL,        "Weechat", 1 << 3,     False,       False,      -1 },
+	{ "URxvt",        NULL,        "Weechat", 1 << 3,     False,       False,      -1 },
 };
 
 /* layout(s) */
@@ -90,6 +88,7 @@ static const char *musiccmd[]      = { terminal, "-e", "ncmpcpp", NULL };
 static const char *scratchpadcmd[] = { terminal, "-name", scratchpadname, "-geometry", "150x40", NULL };
 static const char *filemancmd[]    = { "thunar", NULL };
 static const char *browsercmd[]    = { "chromium", NULL };
+static const char *dwbcmd[]    = { "dwb", NULL };
 /* static const char *altbrowsercmd[] = { "firefox", NULL }; */
 static const char *editorcmd[]     = { terminal, "-e", "vim", NULL };
 static const char *volmcmd[]       = { "amixer", "-q", "sset", "Master", "toggle", NULL };
@@ -111,6 +110,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return,  spawn,          {.v = termcmd } },
     { MODKEY|ControlMask,           XK_Return,  spawn,          {.v = transterm } },
 	{ MODKEY|ShiftMask,             XK_n,       spawn,          {.v = musiccmd } },
+    { MODKEY|ShiftMask,             XK_b,       spawn,          {.v = dwbcmd } },
     { MODKEY|ShiftMask,             XK_m,       spawn,          {.v = irccmd } },
 	{ MODKEY,                       XK_x,       togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_t,       spawn,          {.v = filemancmd } },
@@ -127,7 +127,7 @@ static Key keys[] = {
 	{ 0,                            0x1008ff17, spawn,          {.v = ncmpcppnextcmd } },
 	{ 0,                            XK_Print,   spawn,          {.v = screenshotcmd } },
 	{ MODKEY|ALTKEY,                XK_m,       togglemax,      {0} },
-	{ MODKEY|ShiftMask,             XK_b,       togglebar,      {0} },
+	{ MODKEY|ALTKEY,             XK_b,       togglebar,      {0} },
 	{ MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,       focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_j,       pushdown,       {0} },
@@ -186,3 +186,4 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button5,        cycle,          {.i = +1} },
 };
 
+/* vim: set ts=4 sw=4 tw=120 ff=unix :*/

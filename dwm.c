@@ -2701,3 +2701,5 @@ main(int argc, char *argv[]) {
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
 }
+
+/* vim: set ts=4 sw=4 tw=120 ff=unix :*/
