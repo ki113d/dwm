@@ -102,7 +102,6 @@ static const char *ncmpcppprevcmd[]   = { "ncmpcpp", "prev", NULL };
 static const char *ncmpcppnextcmd[]   = { "ncmpcpp", "next", NULL };
 static const char *screenshotcmd[] = { "printscreen", NULL };
 static const char *lockcmd[]       = { "slock", NULL };
-static const char *irccmd[]        = { terminal, "-e", "/home/ki113d/bin/Weechat", NULL };
 
 static Key keys[] = {
 	/* modifier                     key         function        argument */
@@ -111,7 +110,6 @@ static Key keys[] = {
     { MODKEY|ControlMask,           XK_Return,  spawn,          {.v = transterm } },
 	{ MODKEY|ShiftMask,             XK_n,       spawn,          {.v = musiccmd } },
     { MODKEY|ShiftMask,             XK_b,       spawn,          {.v = dwbcmd } },
-    { MODKEY|ShiftMask,             XK_m,       spawn,          {.v = irccmd } },
 	{ MODKEY,                       XK_x,       togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_t,       spawn,          {.v = filemancmd } },
 	{ MODKEY,                       XK_f,       spawn,          {.v = browsercmd } },
