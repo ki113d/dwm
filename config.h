@@ -57,7 +57,7 @@ static const Tag tags[2][6] = {
 	{ "Term",     &layouts[4],     -1,      -1 },
 	{ "Dev",      &layouts[0],     0.80,    -1 },
 	{ "Irc",     &layouts[4],     -1,      -1 },
-	{ "Web",      &layouts[1],     -1,      -1 },
+	{ "Irc",      &layouts[1],     -1,      -1 },
 	{ "Music",    &layouts[4],     -1,      -1 },
 	},{
 	{ "Main",     &layouts[4],     -1,      -1 },
